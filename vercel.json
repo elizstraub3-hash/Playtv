@@ -1,5 +1,9 @@
 {
-  "outputDirectory": "www",
   "installCommand": "echo sem-instalacao",
-  "buildCommand": "echo sem-build"
+  "buildCommand": "node scripts/build-web.js",
+  "outputDirectory": "dist",
+  "redirects": [
+    { "source": "/apk", "destination": "https://github.com/elizstraub3-hash/Playtv/releases/latest/download/EZPlay.apk", "permanent": false },
+    { "source": "/windows", "destination": "https://github.com/elizstraub3-hash/Playtv/releases/latest/download/EZPlay-Setup.exe", "permanent": false }
+  ]
 }

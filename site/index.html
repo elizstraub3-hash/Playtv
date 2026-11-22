@@ -1,0 +1,323 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>EZ Play</title>
+  <meta name="description" content="EZ Play: player para assistir TV ao vivo, filmes e séries das suas playlists no celular, TV Box e Windows. Planos mensal e anual com suporte pelo WhatsApp.">
+  <meta name="theme-color" content="#2e0373">
+  <link rel="icon" href="/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/icon.svg">
+  <meta property="og:title" content="EZ Play">
+  <meta property="og:description" content="TV ao vivo, filmes e séries das suas playlists, simples de verdade. Celular, TV Box e Windows.">
+  <meta property="og:image" content="/cover.jpg">
+  <style>
+    @font-face { font-family: "Poppins"; font-weight: 600; font-display: swap; src: url("/vendor/fonts/poppins-latin-600-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 800; font-display: swap; src: url("/vendor/fonts/poppins-latin-800-normal.woff2") format("woff2"); }
+    :root {
+      --bg: #0f0a1e; --bg-2: #150d2a; --panel: #1c1236; --line: #36275f;
+      --text: #f3effb; --muted: #b3a9d1; --accent: #7a1ee6; --accent-2: #b66dff;
+      --grad: linear-gradient(135deg, #6a11d8, #b05cff);
+      --wa: #25d366;
+      --display: "Poppins", system-ui, sans-serif;
+      color-scheme: dark;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+    body { margin: 0; background: var(--bg); color: var(--text); font: 16px/1.6 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+    a { color: inherit; }
+    .wrap { max-width: 980px; margin: 0 auto; padding-left: max(18px, env(safe-area-inset-left)); padding-right: max(18px, env(safe-area-inset-right)); }
+    h1, h2, h3 { font-family: var(--display); line-height: 1.15; margin: 0; text-wrap: balance; }
+    h2 { font-size: clamp(26px, 5vw, 36px); font-weight: 800; text-align: center; }
+    .sub { text-align: center; color: var(--muted); margin: 10px auto 0; max-width: 56ch; }
+    section { padding-block: 64px; }
+
+    /* Botões */
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; padding: 14px 24px; border-radius: 999px;
+      font: 600 16px var(--display); text-decoration: none; border: 1px solid transparent; cursor: pointer; transition: transform .15s, filter .15s; }
+    .btn:hover { transform: translateY(-2px); filter: brightness(1.08); }
+    .btn:focus-visible { outline: 3px solid var(--accent-2); outline-offset: 3px; }
+    .btn svg { width: 20px; height: 20px; flex: none; }
+    .btn.primary { background: var(--grad); color: #fff; box-shadow: 0 10px 30px #6a11d855; }
+    .btn.wa { background: var(--wa); color: #08361b; }
+    .btn.ghost { background: #ffffff10; border-color: #ffffff2e; color: #fff; }
+    .btn[aria-disabled="true"] { opacity: .55; pointer-events: none; }
+
+    /* Topo com logo centralizada */
+    .top { padding-top: max(26px, env(safe-area-inset-top)); display: flex; justify-content: center; }
+    .logo { display: inline-flex; align-items: center; gap: 12px; text-decoration: none; font: 800 30px var(--display); letter-spacing: -.5px; }
+    .logo img { width: 52px; height: 52px; border-radius: 14px; }
+    .logo b { background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
+
+    /* Destaque */
+    .hero { position: relative; overflow: hidden; padding-bottom: 40px; }
+    .hero::before { content: ""; position: absolute; inset: -20% -10% auto; height: 120%; background: radial-gradient(ellipse at 50% 30%, #5b16b8aa, transparent 65%); z-index: -1; }
+    .hero-grid { display: grid; gap: 36px; align-items: center; padding-top: 36px; }
+    .hero h1 { font-size: clamp(32px, 7vw, 54px); font-weight: 800; text-align: center; }
+    .hero h1 span { background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    .hero p { color: var(--muted); text-align: center; margin: 14px auto 0; max-width: 46ch; font-size: 18px; }
+    .cover { width: min(340px, 78vw); margin: 0 auto; border-radius: 26px; overflow: hidden; border: 1px solid #ffffff22; box-shadow: 0 30px 80px #000a, 0 0 0 8px #ffffff08; }
+    .cover img { display: block; width: 100%; height: auto; }
+    .actions { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; margin-top: 26px; }
+    .quick { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 30px; }
+    .quick a { display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 18px 10px; border-radius: 18px; background: var(--panel);
+      border: 1px solid var(--line); text-decoration: none; font: 600 14px var(--display); text-align: center; transition: border-color .15s, transform .15s; }
+    .quick a:hover, .quick a:focus-visible { border-color: var(--accent-2); transform: translateY(-2px); outline: none; }
+    .quick svg { width: 28px; height: 28px; color: var(--accent-2); }
+    .quick a.is-wa svg { color: var(--wa); }
+
+    /* Planos */
+    .plans { display: grid; gap: 18px; margin-top: 36px; grid-template-columns: 1fr; max-width: 760px; margin-left: auto; margin-right: auto; }
+    .plan { position: relative; background: var(--panel); border: 1px solid var(--line); border-radius: 24px; padding: 28px 24px; display: flex; flex-direction: column; gap: 16px; }
+    .plan.best { background: linear-gradient(160deg, #2a1556, #1c1236 60%); border: 2px solid var(--accent-2); box-shadow: 0 20px 60px #6a11d840; }
+    .tag { position: absolute; top: -14px; left: 50%; transform: translateX(-50%); background: var(--grad); color: #fff; font: 600 13px var(--display);
+      padding: 6px 16px; border-radius: 999px; white-space: nowrap; }
+    .plan h3 { font-size: 20px; font-weight: 600; color: var(--muted); }
+    .price { font: 800 44px/1 var(--display); letter-spacing: -1px; display: flex; align-items: baseline; gap: 6px; flex-wrap: wrap; }
+    .price small { font: 600 16px var(--display); color: var(--muted); letter-spacing: 0; }
+    .eq { margin: -6px 0 0; color: #d9c6ff; font-size: 15px; }
+    .eq strong { color: #7ef0a8; }
+    .plan ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+    .plan li { display: flex; gap: 10px; align-items: flex-start; }
+    .plan li svg { width: 20px; height: 20px; flex: none; margin-top: 2px; color: #7ef0a8; }
+    .plan .btn { margin-top: auto; width: 100%; }
+    .pay { text-align: center; color: var(--muted); font-size: 14px; margin-top: 18px; }
+
+    /* Download */
+    .dl { display: grid; gap: 14px; margin-top: 36px; grid-template-columns: 1fr; }
+    .dl-card { background: var(--panel); border: 1px solid var(--line); border-radius: 20px; padding: 22px; display: flex; flex-direction: column; gap: 12px; }
+    .dl-card .head { display: flex; align-items: center; gap: 12px; }
+    .dl-card .head svg { width: 30px; height: 30px; color: var(--accent-2); flex: none; }
+    .dl-card h3 { font-size: 18px; font-weight: 600; }
+    .dl-card p { margin: 0; color: var(--muted); font-size: 15px; }
+    .code { display: inline-flex; align-items: center; gap: 10px; flex-wrap: wrap; background: var(--bg-2); border: 1px dashed var(--line); border-radius: 12px; padding: 10px 14px; font: 600 17px ui-monospace, Menlo, monospace; color: #fff; word-break: break-all; }
+    .dl-card .btn { align-self: flex-start; }
+
+    /* Ajuda */
+    .faq { max-width: 760px; margin: 32px auto 0; display: flex; flex-direction: column; gap: 10px; }
+    details { background: var(--panel); border: 1px solid var(--line); border-radius: 16px; padding: 0 18px; }
+    details[open] { border-color: #4d3a85; }
+    summary { cursor: pointer; list-style: none; padding: 16px 0; font: 600 16px var(--display); display: flex; justify-content: space-between; gap: 12px; }
+    summary::-webkit-details-marker { display: none; }
+    summary::after { content: "+"; color: var(--accent-2); font-size: 22px; line-height: 1; }
+    details[open] summary::after { content: "−"; }
+    details p, details ol { margin: 0 0 16px; color: var(--muted); }
+    details ol { padding-left: 20px; }
+    .support { text-align: center; margin-top: 30px; }
+
+    /* Rodapé */
+    footer { border-top: 1px solid var(--line); padding-block: 36px max(36px, env(safe-area-inset-bottom)); text-align: center; color: var(--muted); font-size: 14px; }
+    footer .logo { font-size: 22px; }
+    footer .logo img { width: 36px; height: 36px; border-radius: 10px; }
+    footer nav { display: flex; gap: 18px; justify-content: center; flex-wrap: wrap; margin: 16px 0; }
+    footer nav a { color: var(--text); }
+    footer p { max-width: 62ch; margin: 8px auto 0; }
+
+    /* Botão flutuante do WhatsApp */
+    .float-wa { position: fixed; right: max(18px, env(safe-area-inset-right)); bottom: max(18px, env(safe-area-inset-bottom)); width: 58px; height: 58px; border-radius: 50%;
+      background: var(--wa); display: grid; place-items: center; box-shadow: 0 10px 30px #0008; z-index: 10; }
+    .float-wa svg { width: 30px; height: 30px; color: #fff; }
+    .float-wa[aria-disabled="true"] { display: none; }
+
+    @media (min-width: 760px) {
+      .hero-grid { grid-template-columns: 1.1fr .9fr; }
+      .hero h1, .hero p { text-align: left; margin-left: 0; }
+      .actions { justify-content: flex-start; }
+      .plans { grid-template-columns: 1fr 1fr; }
+      .dl { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 380px) { .quick a { font-size: 13px; padding: 14px 6px; } }
+  </style>
+</head>
+<body>
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <symbol id="i-wa" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.1-1.2l-.4-.2Z"/></symbol>
+    <symbol id="i-down" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M12 3v12m0 0-5-5m5 5 5-5M4 19h16"/></symbol>
+    <symbol id="i-help" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .8-1 1.5v.7M12 17h.01"/></g></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="m5 12.5 4.5 4.5L19 7.5"/></symbol>
+    <symbol id="i-phone" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="6" y="2.5" width="12" height="19" rx="3"/><path d="M11 18.5h2"/></g></symbol>
+    <symbol id="i-tv" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="18" height="12" rx="2"/><path d="M8 21h8M9 2.5l3 3.5 3-3.5"/></g></symbol>
+    <symbol id="i-pc" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></g></symbol>
+    <symbol id="i-web" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 3 2.5 15 0 18M12 3c-2.5 3-2.5 15 0 18"/></g></symbol>
+    <symbol id="i-play" viewBox="0 0 24 24"><path fill="currentColor" d="M8 5.5v13l10.5-6.5z"/></symbol>
+  </svg>
+
+  <header class="top wrap">
+    <a class="logo" href="/" aria-label="EZ Play, início"><img src="/icon.svg" alt="">EZ<b>Play</b></a>
+  </header>
+
+  <!-- Destaque -->
+  <section class="hero">
+    <div class="wrap">
+      <div class="hero-grid">
+        <div>
+          <h1>Sua TV, seus filmes e séries. <span>Simples de verdade.</span></h1>
+          <p>O EZ Play organiza a sua playlist em uma tela bonita e fácil de usar, no celular, na TV Box e no computador.</p>
+          <div class="actions">
+            <a class="btn primary" href="#planos"><svg><use href="#i-play"/></svg>Ver planos</a>
+            <a class="btn wa" data-wa="Olá! Quero conhecer o EZ Play." href="#"><svg><use href="#i-wa"/></svg>Falar no WhatsApp</a>
+          </div>
+        </div>
+        <div class="cover"><img src="/cover.jpg" alt="EZ Play" width="1122" height="1402"></div>
+      </div>
+
+      <nav class="quick" aria-label="Atalhos">
+        <a href="#baixar"><svg><use href="#i-down"/></svg>Baixar aplicativo</a>
+        <a class="is-wa" data-wa="Olá! Preciso de suporte no EZ Play." href="#"><svg><use href="#i-wa"/></svg>Contatar suporte</a>
+        <a href="#ajuda"><svg><use href="#i-help"/></svg>Verificar suporte</a>
+      </nav>
+    </div>
+  </section>
+
+  <!-- Planos -->
+  <section id="planos">
+    <div class="wrap">
+      <h2>Escolha seu plano</h2>
+      <p class="sub">Assinatura com suporte pelo WhatsApp e atualizações incluídas. A contratação é feita direto com a gente, no WhatsApp.</p>
+      <div class="plans">
+        <article class="plan">
+          <h3>Mensal</h3>
+          <div class="price">R$ 30,00 <small>/mês</small></div>
+          <ul>
+            <li><svg><use href="#i-check"/></svg>Suporte pelo WhatsApp</li>
+            <li><svg><use href="#i-check"/></svg>Celular, TV Box, Android TV e Windows</li>
+            <li><svg><use href="#i-check"/></svg>Atualizações do app incluídas</li>
+            <li><svg><use href="#i-check"/></svg>Sem fidelidade</li>
+          </ul>
+          <a class="btn ghost" data-wa="Olá! Quero assinar o EZ Play no plano MENSAL (R$ 30,00/mês)." href="#"><svg><use href="#i-wa"/></svg>Assinar pelo WhatsApp</a>
+        </article>
+        <article class="plan best">
+          <span class="tag">Mais vantajoso · 2 meses grátis</span>
+          <h3>Anual</h3>
+          <div class="price">R$ 300,00 <small>/ano</small></div>
+          <p class="eq">Sai por <strong>R$ 25,00 por mês</strong>. Você economiza R$ 60,00 no ano.</p>
+          <ul>
+            <li><svg><use href="#i-check"/></svg>Suporte prioritário pelo WhatsApp</li>
+            <li><svg><use href="#i-check"/></svg>Celular, TV Box, Android TV e Windows</li>
+            <li><svg><use href="#i-check"/></svg>Atualizações do app incluídas</li>
+            <li><svg><use href="#i-check"/></svg>Pague uma vez e esqueça por 12 meses</li>
+          </ul>
+          <a class="btn primary" data-wa="Olá! Quero assinar o EZ Play no plano ANUAL (R$ 300,00/ano)." href="#"><svg><use href="#i-wa"/></svg>Assinar pelo WhatsApp</a>
+        </article>
+      </div>
+      <p class="pay">Pagamento por Pix, combinado no WhatsApp.</p>
+    </div>
+  </section>
+
+  <!-- Baixar -->
+  <section id="baixar">
+    <div class="wrap">
+      <h2>Baixe o aplicativo</h2>
+      <p class="sub">Instale no seu aparelho em poucos minutos. Se precisar, a gente te ajuda pelo WhatsApp.</p>
+      <div class="dl">
+        <div class="dl-card">
+          <div class="head"><svg><use href="#i-phone"/></svg><h3>Celular Android</h3></div>
+          <p>Toque em baixar, abra o arquivo e permita a instalação quando o celular pedir.</p>
+          <a class="btn primary" href="/apk"><svg><use href="#i-down"/></svg>Baixar para Android</a>
+        </div>
+        <div class="dl-card">
+          <div class="head"><svg><use href="#i-tv"/></svg><h3>TV Box e Android TV</h3></div>
+          <p>Instale o app <strong>Downloader</strong> na TV e digite este endereço:</p>
+          <span class="code" id="tvCode">ezplaytv.vercel.app/apk</span>
+        </div>
+        <div class="dl-card">
+          <div class="head"><svg><use href="#i-pc"/></svg><h3>Windows</h3></div>
+          <p>Baixe o instalador e execute. Se o Windows avisar, clique em "Mais informações" e "Executar assim mesmo".</p>
+          <a class="btn ghost" href="/windows"><svg><use href="#i-down"/></svg>Baixar para Windows</a>
+        </div>
+        <div class="dl-card">
+          <div class="head"><svg><use href="#i-web"/></svg><h3>iPhone e navegador</h3></div>
+          <p>Use pelo navegador. Algumas playlists só funcionam no app instalado (Android ou Windows).</p>
+          <a class="btn ghost" href="/app/"><svg><use href="#i-play"/></svg>Abrir no navegador</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Ajuda -->
+  <section id="ajuda">
+    <div class="wrap">
+      <h2>Verificar suporte</h2>
+      <p class="sub">Respostas rápidas para as dúvidas mais comuns. Não encontrou? Fale com o suporte.</p>
+      <div class="faq">
+        <details>
+          <summary>Como instalar no celular Android?</summary>
+          <ol>
+            <li>Toque em "Baixar para Android" nesta página.</li>
+            <li>Abra o arquivo baixado (EZPlay.apk).</li>
+            <li>Se aparecer "fontes desconhecidas", toque em Configurações e permita.</li>
+            <li>Toque em Instalar e abra o EZ Play.</li>
+          </ol>
+        </details>
+        <details>
+          <summary>Como instalar na TV Box ou Android TV?</summary>
+          <ol>
+            <li>Na loja da TV, instale o app Downloader.</li>
+            <li>Abra o Downloader e digite: ezplaytv.vercel.app/apk</li>
+            <li>Aguarde baixar e toque em Instalar.</li>
+            <li>O EZ Play aparece na tela inicial da TV.</li>
+          </ol>
+        </details>
+        <details>
+          <summary>Como coloco minha playlist no app?</summary>
+          <p>Abra o menu, toque em Playlist e escolha a forma: Login Xtream (servidor, usuário e senha), link M3U ou arquivo. Se tiver dúvida, chame o suporte que a gente configura com você.</p>
+        </details>
+        <details>
+          <summary>Como faço para assinar ou renovar?</summary>
+          <p>Toque em "Assinar pelo WhatsApp" no plano que preferir. A gente confirma o pagamento por Pix e libera tudo na hora. Para renovar, é só chamar no mesmo WhatsApp.</p>
+        </details>
+        <details>
+          <summary>O app trava ou um canal não abre. O que eu faço?</summary>
+          <p>Primeiro, confira sua internet e feche e abra o app. Se continuar, chame o suporte no WhatsApp e informe o ID do aparelho, que aparece no menu do app.</p>
+        </details>
+        <details>
+          <summary>Funciona em quais aparelhos?</summary>
+          <p>Celulares e tablets Android, TV Box, Android TV e computadores com Windows. No iPhone, dá para usar pelo navegador.</p>
+        </details>
+        <details>
+          <summary>O EZ Play já vem com canais?</summary>
+          <p>O EZ Play é um player: você usa com a sua playlist. Para qualquer dúvida sobre configuração, fale com o suporte.</p>
+        </details>
+      </div>
+      <div class="support">
+        <a class="btn wa" data-wa="Olá! Preciso de suporte no EZ Play." href="#"><svg><use href="#i-wa"/></svg>Contatar suporte</a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap">
+      <a class="logo" href="/"><img src="/icon.svg" alt="">EZ<b>Play</b></a>
+      <nav aria-label="Rodapé">
+        <a href="#planos">Planos</a>
+        <a href="#baixar">Baixar</a>
+        <a href="#ajuda">Ajuda</a>
+        <a href="/privacidade.html">Política de privacidade</a>
+      </nav>
+      <p>O EZ Play é um aplicativo reprodutor de mídia. Não fornece, vende ou hospeda canais, filmes ou séries. Use apenas conteúdos que você tem direito de acessar.</p>
+      <p>© <span id="year">2026</span> EZ Play</p>
+    </div>
+  </footer>
+
+  <a class="float-wa" data-wa="Olá! Vim pelo site do EZ Play." href="#" aria-label="Falar no WhatsApp"><svg><use href="#i-wa"/></svg></a>
+
+  <script>
+    // ===== CONFIGURAÇÃO =====
+    // Número do WhatsApp com DDI 55 + DDD + número, só dígitos. Ex.: '5541999999999'
+    const WHATSAPP = '';
+    // ========================
+    document.querySelectorAll('[data-wa]').forEach(function (a) {
+      if (WHATSAPP) {
+        a.href = 'https://wa.me/' + WHATSAPP + '?text=' + encodeURIComponent(a.dataset.wa);
+        a.target = '_blank';
+        a.rel = 'noopener';
+      } else {
+        a.setAttribute('aria-disabled', 'true');
+        a.title = 'WhatsApp em configuração';
+      }
+    });
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>

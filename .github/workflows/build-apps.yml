@@ -56,6 +56,7 @@ jobs:
           mkdir -p ../out
           cp app/build/outputs/apk/release/app-release.apk "../out/EZPlay-${VERSION_NAME}.apk"
           cp app/build/outputs/bundle/release/app-release.aab "../out/EZPlay-${VERSION_NAME}-PlayStore.aab"
+          cp app/build/outputs/apk/release/app-release.apk ../out/EZPlay.apk
       - name: Gerar APK de teste (sem chave de assinatura configurada)
         if: ${{ env.KEYSTORE_BASE64 == '' }}
         working-directory: android
@@ -64,6 +65,7 @@ jobs:
           ./gradlew --no-daemon assembleDebug
           mkdir -p ../out
           cp app/build/outputs/apk/debug/app-debug.apk "../out/EZPlay-${VERSION_NAME}-teste.apk"
+          cp app/build/outputs/apk/debug/app-debug.apk ../out/EZPlay.apk
       - uses: actions/upload-artifact@v4
         with:
           name: android
@@ -84,6 +86,7 @@ jobs:
         run: |
           npm pkg set version="$VERSION_NAME"
           npx electron-builder --win nsis --publish never
+          cp dist-win/EZPlay-Setup-*.exe dist-win/EZPlay-Setup.exe
       - uses: actions/upload-artifact@v4
         with:
           name: windows
