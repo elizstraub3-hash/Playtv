@@ -261,7 +261,8 @@ input:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
 .bottom-nav .sep { width: 1px; height: 30px; background: var(--line); }
 .bottom-nav .ico { width: 26px; height: 26px; }
 .bottom-nav .on { background: var(--grad); color: #fff; font-weight: 700; padding: 0 22px; }
-.bottom-nav span { display: none; }
+@media (max-width: 380px) { .bottom-nav { padding: 0 8px; } .bottom-nav .on { padding: 0 16px; } .bottom-nav button, .bottom-nav a { min-width: 48px; } }
+.bottom-nav span { display: none; white-space: nowrap; }
 .bottom-nav .on span { display: inline; }
 
 /* ---------- Player ---------- */
@@ -325,7 +326,7 @@ dialog::backdrop { background: rgba(0, 0, 0, .7); }
 
 /* ---------- Telas maiores (tablet, PC, TV) ---------- */
 @media (min-width: 820px) {
-  .wrap, .chips, .row-head, .rail, .grid, .cat-grid, .chan-list, .search-box, .ep-list, .detail-actions, .detail-plot, .detail-extra, .detail-body { padding-left: 40px; padding-right: 40px; }
+  .wrap, .chips, .row-head, .rail, .grid, .cat-grid, .chan-list, .search-box, .ep-list, .detail-actions, .detail-plot, .detail-extra, .detail-body, .section-title { padding-left: 40px; padding-right: 40px; }
   .header { padding-left: 40px; padding-right: 40px; }
   .hero, .panel { margin-left: 40px; margin-right: 40px; }
   .search-box .ico { left: 54px; }

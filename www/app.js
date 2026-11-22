@@ -135,6 +135,30 @@
     return data;
   }
 
+  // ================= Conteúdo de demonstração =================
+  // Filmes de licença aberta (Creative Commons, Blender Foundation) e streams de teste públicos.
+  // Permite conhecer o app (e a revisão da Play Store testar) sem ter uma playlist.
+  const GTV = 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/';
+  const DEMO_M3U = `#EXTM3U
+#EXTINF:-1 group-title="Canais de teste",Canal de teste HLS 1
+https://devstreaming-cdn.apple.com/videos/streaming/examples/img_bipbop_adv_example_fmp4/master.m3u8
+#EXTINF:-1 group-title="Canais de teste",Canal de teste HLS 2
+https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8
+#EXTINF:-1 tvg-logo="${GTV}images/BigBuckBunny.jpg" group-title="Filmes livres",Big Buck Bunny (2008)
+${GTV}BigBuckBunny.mp4
+#EXTINF:-1 tvg-logo="${GTV}images/ElephantsDream.jpg" group-title="Filmes livres",Elephants Dream (2006)
+${GTV}ElephantsDream.mp4
+#EXTINF:-1 tvg-logo="${GTV}images/Sintel.jpg" group-title="Filmes livres",Sintel (2010)
+${GTV}Sintel.mp4
+#EXTINF:-1 tvg-logo="${GTV}images/TearsOfSteel.jpg" group-title="Filmes livres",Tears of Steel (2012)
+${GTV}TearsOfSteel.mp4
+`;
+  async function addDemo() {
+    if (S.playlists.some((p) => p.demo)) { location.hash = '#/home'; return; }
+    S.playlists.push({ id: uid(), name: 'Demonstração', type: 'm3u', fileOnly: true, demo: true, updated: Date.now(), data: m3uToData(DEMO_M3U) });
+    await savePlaylists(); rebuild(); location.hash = '#/home'; render();
+  }
+
   // ================= Playlists: Xtream Codes =================
   const xbase = (pl) => `${pl.server}/player_api.php?username=${enc(pl.user)}&password=${enc(pl.pass)}`;
   async function xget(pl, action, extra = '') {
@@ -273,7 +297,8 @@
   function emptyState() {
     return `<div class="empty"><div class="big">${ico('tv')}</div><h2>Vamos começar?</h2>
       <p>Adicione sua playlist: login Xtream (servidor, usuário e senha), link M3U ou arquivo. Seus canais, filmes e séries aparecem aqui.</p>
-      <a class="btn primary" href="#/playlists">${ico('plus')} Adicionar playlist</a></div>`;
+      <a class="btn primary" href="#/playlists">${ico('plus')} Adicionar playlist</a>
+      <button class="btn" data-demo>${ico('play', 1)} Experimentar com vídeos de demonstração</button></div>`;
   }
 
   // ================= Telas =================
@@ -362,7 +387,7 @@
     const info = await getInfo(it);
     if (info.plot) $('.plot', el).textContent = info.plot;
     $('.meta', el).innerHTML = metaLine(it, info);
-    if (info.backdrop && window.innerWidth >= 820) $('.bg', el).src = info.backdrop;
+    if (info.backdrop) $('.bg', el).src = info.backdrop; // imagem de fundo sem texto: evita título duplicado
   }
 
   function catsSections() {
@@ -562,6 +587,7 @@
         <div id="addFields">${addFields()}</div>
         <p class="msg" id="addMsg"></p>
         <button class="btn primary" id="addBtn">${ico('plus')} Adicionar</button>
+        ${S.playlists.some((p) => p.demo) ? '' : `<button type="button" class="btn" data-demo>${ico('play', 1)} Adicionar vídeos de demonstração</button>`}
         <p class="note">Suas playlists ficam salvas apenas neste aparelho. O EZ Play não fornece canais nem conteúdo: use somente listas que você tem direito de assistir.</p>
       </form>`;
   }
@@ -647,6 +673,7 @@
       <div class="panel"><h3>Playlists</h3><p>${S.playlists.length} playlist(s) adicionada(s).</p><div><a class="btn" href="#/playlists">Gerenciar playlists</a></div></div>
       <div class="panel"><h3>Sobre</h3><p>EZ Play ${VERSION} · ID do aparelho ${esc(S.settings.deviceId)}</p>
         <p>O EZ Play é um reprodutor. Não oferece, vende nem hospeda canais ou filmes.</p>
+        <p><a href="privacidade.html" style="color:var(--accent-2)">Política de privacidade</a></p>
         <div><button class="btn" id="setClear">Apagar todos os dados deste aparelho</button></div>
       </div>`;
   }
@@ -735,6 +762,7 @@
     if (t.closest('[data-back]')) { goBack(); return; }
     if (t.closest('[data-open-profiles]')) { openProfiles(); return; }
     if (t.closest('[data-menu]')) { openDrawer(); return; }
+    if (t.closest('[data-demo]')) { addDemo(); return; }
   });
   function goBack() { if (history.length > 1 && lastHash) history.back(); else location.hash = '#/home'; }
 
