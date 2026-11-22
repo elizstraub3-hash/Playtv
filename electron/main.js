@@ -10,7 +10,7 @@ function createWindow() {
     height: 780,
     minWidth: 380,
     minHeight: 560,
-    backgroundColor: '#0d0b14',
+    backgroundColor: '#2e0373',
     title: 'EZ Play',
     icon: path.join(__dirname, '..', 'build', 'icon.png'),
     autoHideMenuBar: true,

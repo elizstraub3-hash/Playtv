@@ -1,7 +1,7 @@
 // Service worker: guarda a "casca" do app para abrir rápido e funcionar como app instalado.
 // Streams de vídeo e listas nunca são cacheados.
-const CACHE = 'ezplay-v4';
-const SHELL = ['./', 'index.html', 'style.css', 'app.js', 'icon.svg', 'manifest.webmanifest', 'vendor/hls.min.js', 'vendor/mpegts.min.js'];
+const CACHE = 'ezplay-v5';
+const SHELL = ['./', 'index.html', 'style.css', 'app.js', 'icon.svg', 'manifest.webmanifest', 'vendor/hls.min.js', 'vendor/mpegts.min.js', 'cover.jpg', 'vendor/fonts/poppins-latin-600-normal.woff2', 'vendor/fonts/poppins-latin-800-normal.woff2'];
 
 self.addEventListener('install', (e) => {
   e.waitUntil(caches.open(CACHE).then((c) => c.addAll(SHELL)).then(() => self.skipWaiting()));

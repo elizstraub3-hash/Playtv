@@ -8,7 +8,7 @@
   },
   "android": {
     "allowMixedContent": true,
-    "backgroundColor": "#0d0b14"
+    "backgroundColor": "#2e0373"
   },
   "plugins": {
     "CapacitorHttp": { "enabled": true }
