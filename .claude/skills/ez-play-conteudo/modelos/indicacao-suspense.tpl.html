@@ -1,0 +1,153 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+@font-face{font-family:P;font-weight:600;src:url(file://__P__/vendor/fonts/poppins-latin-600-normal.woff2)}
+@font-face{font-family:P;font-weight:800;src:url(file://__P__/vendor/fonts/poppins-latin-800-normal.woff2)}
+*{box-sizing:border-box}
+body{margin:0;width:1080px;height:1920px;overflow:hidden;background:#06020d;font-family:P;color:#fff;position:relative}
+#world{position:absolute;inset:0}
+.bg{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 38%,#2a0c5c 0%,#12052a 45%,#06020d 80%)}
+.fog{position:absolute;width:900px;height:900px;border-radius:50%;background:radial-gradient(circle,#6a11d855,transparent 70%);filter:blur(40px)}
+canvas#grain{position:absolute;left:0;top:0;width:1080px;height:1920px;opacity:.10;mix-blend-mode:screen}
+.vig{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 45%,transparent 35%,#000d 100%)}
+.scene{position:absolute;inset:0;opacity:0}
+svg{position:absolute;left:0;top:0;overflow:visible}
+.brand{position:absolute;left:44px;top:70px;display:flex;align-items:center;gap:14px;font-weight:800;font-size:38px;opacity:.9}
+.brand img{width:56px;height:56px;border-radius:14px}
+.brand b{background:linear-gradient(135deg,#a855f7,#d8b4fe);-webkit-background-clip:text;background-clip:text;color:transparent}
+.tagline{position:absolute;right:44px;top:84px;font-weight:600;font-size:28px;letter-spacing:4px;color:#d9c2ff;opacity:.8}
+#cap{position:absolute;left:0;right:0;top:1270px;text-align:center;font-weight:800;font-size:112px;letter-spacing:-2px;line-height:1;
+  -webkit-text-stroke:10px #000;paint-order:stroke fill;text-shadow:0 10px 30px #000c;white-space:nowrap}
+#cap.hot{color:#c6ff3d}
+.title{position:absolute;left:0;right:0;top:560px;text-align:center}
+.title h1{margin:0;font-weight:800;font-size:150px;letter-spacing:6px;line-height:1;text-shadow:0 0 40px #b05cff,0 0 90px #6a11d8}
+.title .chip{display:inline-block;margin-top:34px;padding:16px 34px;border:3px solid #ffffff55;border-radius:999px;font-weight:600;font-size:40px;letter-spacing:6px}
+.stamp{position:absolute;left:50%;top:620px;width:760px;margin-left:-380px;text-align:center;border:12px solid #ff4d6d;color:#ff4d6d;border-radius:30px;
+  padding:30px 0;font-weight:800;font-size:120px;letter-spacing:4px}
+.poll{position:absolute;left:120px;right:120px;top:560px;background:#1c1236ee;border:3px solid #ffffff2a;border-radius:44px;padding:44px}
+.poll h3{margin:0 0 30px;font-size:58px;line-height:1.15}
+.opt{display:flex;justify-content:space-between;align-items:center;padding:26px 34px;border-radius:26px;background:#ffffff10;margin-top:20px;font-weight:600;font-size:46px;position:relative;overflow:hidden}
+.opt i{position:absolute;left:0;top:0;bottom:0;background:linear-gradient(90deg,#6a11d8aa,#b05cff66);z-index:0}
+.opt span{position:relative;z-index:1}
+.end{position:absolute;left:0;right:0;top:520px;display:flex;flex-direction:column;align-items:center;gap:34px}
+.end img{width:260px;height:260px;border-radius:64px;box-shadow:0 30px 90px #6a11d8aa}
+.end .w{font-weight:800;font-size:130px;letter-spacing:-3px;line-height:1}
+.end .w b{background:linear-gradient(135deg,#a855f7,#d8b4fe);-webkit-background-clip:text;background-clip:text;color:transparent}
+.end .s{font-weight:600;font-size:50px;color:#e8dcff;text-align:center;line-height:1.3}
+.follow{margin-top:20px;padding:26px 60px;border-radius:999px;background:linear-gradient(135deg,#6a11d8,#b05cff);font-weight:800;font-size:50px;box-shadow:0 20px 60px #6a11d866}
+.flash{position:absolute;inset:0;background:#ff2d55;mix-blend-mode:screen;opacity:0}
+.scan{position:absolute;inset:0;background:repeating-linear-gradient(0deg,#ffffff10 0 2px,transparent 2px 6px);opacity:0}
+</style></head><body>
+<div id="world">
+ <div class="bg"></div>
+ <div class="fog" id="f1" style="left:-200px;top:300px"></div><div class="fog" id="f2" style="left:400px;top:900px"></div>
+ <!-- Porta e silhueta (cenas 1 a 4) -->
+ <div class="scene" id="door"><svg width="1080" height="1920" viewBox="0 0 1080 1920">
+  <defs>
+   <radialGradient id="glow" cx="50%" cy="50%" r="60%"><stop offset="0" stop-color="#ffd9a0"/><stop offset=".55" stop-color="#ff9f5a" stop-opacity=".55"/><stop offset="1" stop-color="#ff9f5a" stop-opacity="0"/></radialGradient>
+   <linearGradient id="panel" x1="0" x2="1"><stop offset="0" stop-color="#2b1640"/><stop offset="1" stop-color="#180a28"/></linearGradient>
+   <filter id="blur8"><feGaussianBlur stdDeviation="8"/></filter>
+  </defs>
+  <polygon id="rays" points="540,1180 140,1700 940,1700" fill="url(#glow)" opacity="0"/>
+  <rect x="330" y="420" width="420" height="760" fill="#000"/>
+  <rect id="light" x="330" y="420" width="420" height="760" fill="url(#glow)" opacity="0"/>
+  <g id="sil" opacity="0">
+   <path d="M452 640 C452 520 628 520 628 640 L645 860 C600 830 480 830 435 860 Z" fill="#0a0414"/>
+   <ellipse cx="540" cy="640" rx="78" ry="96" fill="#0a0414"/>
+   <path d="M540 735 C430 740 395 800 385 880 L370 1180 L710 1180 L695 880 C685 800 650 740 540 735 Z" fill="#0a0414"/>
+   <circle id="eyeL" cx="512" cy="632" r="7" fill="#fff" opacity="0"/><circle id="eyeR" cx="568" cy="632" r="7" fill="#fff" opacity="0"/>
+   <path id="smile" d="M495 680 Q540 720 590 672" stroke="#ff4d6d" stroke-width="9" fill="none" stroke-linecap="round" stroke-dasharray="140" stroke-dashoffset="140"/>
+  </g>
+  <g id="silR" opacity="0" style="mix-blend-mode:screen"><ellipse cx="540" cy="640" rx="78" ry="96" fill="#ff2d55"/><path d="M540 735 C430 740 395 800 385 880 L370 1180 L710 1180 L695 880 C685 800 650 740 540 735 Z" fill="#ff2d55"/></g>
+  <g id="silB" opacity="0" style="mix-blend-mode:screen"><ellipse cx="540" cy="640" rx="78" ry="96" fill="#2de2ff"/><path d="M540 735 C430 740 395 800 385 880 L370 1180 L710 1180 L695 880 C685 800 650 740 540 735 Z" fill="#2de2ff"/></g>
+  <rect id="doorpanel" x="330" y="420" width="420" height="760" fill="url(#panel)" stroke="#3d2260" stroke-width="4"/>
+  <circle id="knob" cx="700" cy="820" r="12" fill="#c9a86b"/>
+  <rect x="310" y="400" width="460" height="790" fill="none" stroke="#2a1745" stroke-width="22"/>
+  <g id="chips" font-family="P" font-weight="600" font-size="44" fill="#fff">
+   <g id="c1" opacity="0"><rect x="70" y="540" width="230" height="84" rx="42" fill="#ffffff18" stroke="#ffffff40" stroke-width="2"/><text x="185" y="596" text-anchor="middle">rosto ✓</text></g>
+   <g id="c2" opacity="0"><rect x="780" y="700" width="230" height="84" rx="42" fill="#ffffff18" stroke="#ffffff40" stroke-width="2"/><text x="895" y="756" text-anchor="middle">voz ✓</text></g>
+   <g id="c3" opacity="0"><rect x="60" y="880" width="270" height="84" rx="42" fill="#ffffff18" stroke="#ffffff40" stroke-width="2"/><text x="195" y="936" text-anchor="middle">carinho ✓</text></g>
+  </g>
+ </svg></div>
+ <!-- Título -->
+ <div class="scene" id="ttl"><div class="title"><h1 id="tt">OUTRA<br>MAMÃE</h1><div class="chip">INDICAÇÃO · SUSPENSE</div></div></div>
+ <!-- Sem spoiler -->
+ <div class="scene" id="spo"><div class="stamp" id="stamp">SEM<br>SPOILER</div></div>
+ <!-- Enquete -->
+ <div class="scene" id="pol"><div class="poll" id="pollc"><h3>Você confiaria nessa mãe?</h3>
+  <div class="opt"><i id="b1"></i><span>Sim 😇</span><span id="p1">0%</span></div>
+  <div class="opt"><i id="b2"></i><span>Nem pensar 😨</span><span id="p2">0%</span></div></div></div>
+ <!-- Final -->
+ <div class="scene" id="fin"><div class="end"><img src="file://__P__/icon.svg"><div class="w">EZ<b>Play</b></div><div class="s">Toda semana tem<br>indicação nova</div><div class="follow" id="fol">Siga o perfil</div></div></div>
+ <canvas id="grain" width="540" height="960"></canvas>
+ <div class="vig"></div>
+</div>
+<div class="flash" id="flash"></div><div class="scan" id="scan"></div>
+<div class="brand"><img src="file://__P__/icon.svg">EZ<b>Play</b></div>
+<div class="tagline">INDICAÇÃO</div>
+<div id="cap"></div>
+<script>
+const WORDS = __WORDS__;
+const el=id=>document.getElementById(id);
+const clamp=(x,a=0,b=1)=>Math.min(b,Math.max(a,x));
+const ease=x=>1-Math.pow(1-clamp(x),3);
+const io=(t,a,b,f)=>Math.min(ease((t-a)/f),1-ease((t-(b-f))/f));
+const g=el('grain').getContext('2d'); const img=g.createImageData(540,960);
+function rnd(s){ let x=Math.sin(s*12.9898)*43758.5453; return x-Math.floor(x); }
+window.render=function(t){
+  // granulado de filme (determinístico por quadro)
+  const fr=Math.floor(t*30); let seed=fr*977;
+  for(let i=0;i<img.data.length;i+=4){ seed=(seed*1103515245+12345)&0x7fffffff; const v=seed>>23; img.data[i]=img.data[i+1]=img.data[i+2]=v; img.data[i+3]=255; }
+  g.putImageData(img,0,0);
+  el('f1').style.transform='translate('+(Math.sin(t/3)*120)+'px,'+(Math.cos(t/4)*80)+'px)';
+  el('f2').style.transform='translate('+(Math.cos(t/3.5)*140)+'px,'+(Math.sin(t/5)*90)+'px)';
+  // cenas
+  el('door').style.opacity=io(t,-1,16.0,.7);
+  el('ttl').style.opacity=io(t,15.9,21.2,.4);
+  el('spo').style.opacity=io(t,21.2,25.4,.3);
+  el('pol').style.opacity=io(t,25.5,29.0,.4);
+  el('fin').style.opacity=io(t,29.0,40,.6);
+  // porta abrindo (0.5 → 2.6 s)
+  const o=ease((t-0.6)/2.0);
+  el('doorpanel').setAttribute('transform','translate(330 0) scale('+(1-0.88*o)+' 1) translate(-330 0)');
+  el('knob').setAttribute('opacity',1-o);
+  el('light').setAttribute('opacity',0.85*o);
+  el('rays').setAttribute('opacity',0.55*o);
+  // silhueta (2.0 s) e olhos
+  const s=ease((t-2.0)/1.2); el('sil').setAttribute('opacity',s);
+  el('sil').setAttribute('transform','translate(0 '+(30*(1-s))+')');
+  const eyes=ease((t-4.7)/0.6); el('eyeL').setAttribute('opacity',eyes*0.9); el('eyeR').setAttribute('opacity',eyes*0.9);
+  // "Só que não" (6.97 → 7.7): falha digital
+  const gl=(t>6.95&&t<7.9)?1:0;
+  const jit=gl? (rnd(fr)*2-1):0;
+  el('silR').setAttribute('opacity',gl?0.7:0); el('silB').setAttribute('opacity',gl?0.7:0);
+  el('silR').setAttribute('transform','translate('+(gl?-18+jit*14:0)+' '+(jit*6)+')');
+  el('silB').setAttribute('transform','translate('+(gl?18-jit*14:0)+' '+(-jit*6)+')');
+  el('flash').style.opacity= gl? (0.35*Math.max(0,1-(t-6.97)/0.5)) : 0;
+  el('scan').style.opacity= gl? 0.8 : 0;
+  el('world').style.transform= gl? 'translate('+(jit*16)+'px,'+(rnd(fr+3)*12-6)+'px)' : 'none';
+  if(t>6.97){ el('light').setAttribute('fill', t<7.9 && fr%4<2 ? '#ff2d55' : 'url(#glow)'); }
+  // mesmo rosto / voz / carinho
+  el('c1').setAttribute('opacity',ease((t-8.5)/0.4)*io(t,8.3,15.6,.4));
+  el('c2').setAttribute('opacity',ease((t-9.6)/0.4)*io(t,8.3,15.6,.4));
+  el('c3').setAttribute('opacity',ease((t-10.8)/0.4)*io(t,8.3,15.6,.4));
+  // sorriso estranho (12.6 → 14.8)
+  const sm=ease((t-12.9)/1.4); el('smile').setAttribute('stroke-dashoffset',140*(1-sm));
+  el('sil').style.filter = t>12.9 ? 'drop-shadow(0 0 '+(20*sm)+'px #ff2d55)' : 'none';
+  // título
+  const tk=ease((t-16.0)/0.6); const flick=(t>16&&t<16.8&&fr%3==0)?0.4:1;
+  el('tt').style.opacity=tk*flick; el('tt').style.transform='scale('+(1.15-0.15*tk)+')';
+  // carimbo
+  const st=ease((t-21.35)/0.25); el('stamp').style.transform='rotate(-8deg) scale('+(2.2-1.2*st)+')'; el('stamp').style.opacity=st;
+  // enquete
+  const pk=ease((t-25.7)/0.5); el('pollc').style.transform='translateY('+(80*(1-pk))+'px)';
+  const fill=ease((t-26.8)/1.4); el('b1').style.width=(22*fill)+'%'; el('b2').style.width=(78*fill)+'%';
+  el('p1').textContent=Math.round(22*fill)+'%'; el('p2').textContent=Math.round(78*fill)+'%';
+  // final
+  const fk=ease((t-31.9)/0.5); el('fol').style.transform='scale('+(0.9+0.1*fk+Math.max(0,Math.sin((t-32.4)*4))*0.03)+')';
+  // legenda palavra por palavra
+  let w=null; for(const x of WORDS){ if(t>=x.s && t<x.e+0.12){ w=x; } }
+  const cap=el('cap');
+  if(w){ const k=ease((t-w.s)/0.12); cap.textContent=w.w.replace(/[,:]$/,''); cap.className=w.hot?'hot':''; cap.style.transform='scale('+(0.75+0.25*k)+')'; cap.style.opacity=1; }
+  else { cap.style.opacity=0; }
+};
+render(0);
+</script></body></html>

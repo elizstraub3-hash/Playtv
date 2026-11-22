@@ -1,0 +1,84 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+@font-face{font-family:P;font-weight:600;src:url(file://__P__/vendor/fonts/poppins-latin-600-normal.woff2)}
+@font-face{font-family:P;font-weight:800;src:url(file://__P__/vendor/fonts/poppins-latin-800-normal.woff2)}
+*{box-sizing:border-box}
+body{margin:0;width:1080px;height:1920px;overflow:hidden;background:#06020d;font-family:P;color:#fff;position:relative}
+#world{position:absolute;inset:0}
+.bg{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 38%,#2a0c5c 0%,#12052a 45%,#06020d 80%)}
+.fog{position:absolute;width:900px;height:900px;border-radius:50%;background:radial-gradient(circle,#6a11d855,transparent 70%);filter:blur(40px)}
+canvas#grain{position:absolute;left:0;top:0;width:1080px;height:1920px;opacity:.10;mix-blend-mode:screen}
+.vig{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 45%,transparent 35%,#000d 100%)}
+.scene{position:absolute;inset:0;opacity:0}
+svg{position:absolute;left:0;top:0;overflow:visible}
+.brand{position:absolute;left:44px;top:70px;display:flex;align-items:center;gap:14px;font-weight:800;font-size:38px;opacity:.9}
+.brand img{width:56px;height:56px;border-radius:14px}
+.brand b{background:linear-gradient(135deg,#a855f7,#d8b4fe);-webkit-background-clip:text;background-clip:text;color:transparent}
+.tagline{position:absolute;right:44px;top:84px;font-weight:600;font-size:28px;letter-spacing:4px;color:#d9c2ff;opacity:.8}
+#cap{position:absolute;left:0;right:0;top:1290px;text-align:center;font-weight:800;font-size:112px;letter-spacing:-2px;line-height:1;
+  -webkit-text-stroke:10px #000;paint-order:stroke fill;text-shadow:0 10px 30px #000c;white-space:nowrap}
+#cap.hot{color:#c6ff3d}
+.title{position:absolute;left:0;right:0;top:560px;text-align:center}
+.title h1{margin:0;font-weight:800;font-size:150px;letter-spacing:6px;line-height:1;text-shadow:0 0 40px #b05cff,0 0 90px #6a11d8}
+.title .chip{display:inline-block;margin-top:34px;padding:16px 34px;border:3px solid #ffffff55;border-radius:999px;font-weight:600;font-size:40px;letter-spacing:6px}
+.stamp{position:absolute;left:50%;top:620px;width:760px;margin-left:-380px;text-align:center;border:12px solid #ff4d6d;color:#ff4d6d;border-radius:30px;
+  padding:30px 0;font-weight:800;font-size:120px;letter-spacing:4px}
+.poll{position:absolute;left:120px;right:120px;top:560px;background:#1c1236ee;border:3px solid #ffffff2a;border-radius:44px;padding:44px}
+.poll h3{margin:0 0 30px;font-size:58px;line-height:1.15}
+.opt{display:flex;justify-content:space-between;align-items:center;padding:26px 34px;border-radius:26px;background:#ffffff10;margin-top:20px;font-weight:600;font-size:46px;position:relative;overflow:hidden}
+.opt i{position:absolute;left:0;top:0;bottom:0;background:linear-gradient(90deg,#6a11d8aa,#b05cff66);z-index:0}
+.opt span{position:relative;z-index:1}
+.end{position:absolute;left:0;right:0;top:520px;display:flex;flex-direction:column;align-items:center;gap:34px}
+.end img{width:260px;height:260px;border-radius:64px;box-shadow:0 30px 90px #6a11d8aa}
+.end .w{font-weight:800;font-size:130px;letter-spacing:-3px;line-height:1}
+.end .w b{background:linear-gradient(135deg,#a855f7,#d8b4fe);-webkit-background-clip:text;background-clip:text;color:transparent}
+.end .s{font-weight:600;font-size:50px;color:#e8dcff;text-align:center;line-height:1.3}
+.follow{margin-top:20px;padding:26px 60px;border-radius:999px;background:linear-gradient(135deg,#6a11d8,#b05cff);font-weight:800;font-size:50px;box-shadow:0 20px 60px #6a11d866}
+.flash{position:absolute;inset:0;background:#ff2d55;mix-blend-mode:screen;opacity:0}
+.scan{position:absolute;inset:0;background:repeating-linear-gradient(0deg,#ffffff10 0 2px,transparent 2px 6px);opacity:0}
+</style></head><body>
+<div id="world">
+ <div class="bg"></div>
+ <div class="fog" id="f1" style="left:-200px;top:300px"></div><div class="fog" id="f2" style="left:400px;top:900px"></div>
+ <canvas id="grain" width="540" height="960"></canvas>
+ <div class="vig"></div>
+</div>
+<style>
+.top{position:absolute;left:0;right:0;top:150px;display:flex;flex-direction:column;align-items:center;gap:18px}
+.top .lg{display:flex;align-items:center;gap:20px;font-weight:800;font-size:92px;letter-spacing:-2px}
+.top .lg img{width:110px;height:110px;border-radius:28px;box-shadow:0 16px 50px #6a11d8aa}
+.top .lg b{background:linear-gradient(135deg,#a855f7,#d8b4fe);-webkit-background-clip:text;background-clip:text;color:transparent}
+.top .sub{font-weight:600;font-size:40px;letter-spacing:8px;color:#e3d2ff}
+#slotwrap{position:absolute;left:40px;top:560px;width:1000px;height:562px;border-radius:36px;padding:8px;background:linear-gradient(135deg,#6a11d8,#d8b4fe);box-shadow:0 30px 90px #000c,0 0 60px #6a11d866}
+#slot{width:100%;height:100%;border-radius:28px;background:#00ff00}
+#fin2{position:absolute;inset:0;opacity:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:34px;background:radial-gradient(ellipse at 50% 40%,#2a0c5c,#06020d 80%)}
+#fin2 img{width:260px;height:260px;border-radius:64px;box-shadow:0 30px 90px #6a11d8aa}
+#fin2 .w{font-weight:800;font-size:130px;letter-spacing:-3px;line-height:1}
+#fin2 .w b{background:linear-gradient(135deg,#a855f7,#d8b4fe);-webkit-background-clip:text;background-clip:text;color:transparent}
+#fin2 .s{font-weight:600;font-size:50px;color:#e8dcff;text-align:center;line-height:1.3}
+</style>
+<div class="top"><div class="lg"><img src="file://__P__/icon.svg">EZ<b>Play</b></div><div class="sub">INDICAÇÃO DA SEMANA</div></div>
+<div id="slotwrap"><div id="slot"></div></div>
+<div id="cap"></div>
+<div id="fin2"><img src="file://__P__/icon.svg"><div class="w">EZ<b>Play</b></div><div class="s">Toda semana tem<br>indicação nova</div><div class="follow" style="margin-top:20px;padding:26px 60px;border-radius:999px;background:linear-gradient(135deg,#6a11d8,#b05cff);font-weight:800;font-size:50px">Siga o perfil</div></div>
+<script>
+const WORDS = __WORDS__;
+const el=id=>document.getElementById(id);
+const clamp=(x,a=0,b=1)=>Math.min(b,Math.max(a,x));
+const ease=x=>1-Math.pow(1-clamp(x),3);
+const g=el('grain').getContext('2d'); const img=g.createImageData(540,960);
+window.render=function(t, mode){
+  const fr=Math.floor(t*30); let seed=fr*977;
+  for(let i=0;i<img.data.length;i+=4){ seed=(seed*1103515245+12345)&0x7fffffff; const v=seed>>23; img.data[i]=img.data[i+1]=img.data[i+2]=v; img.data[i+3]=255; }
+  g.putImageData(img,0,0);
+  el('f1').style.transform='translate('+(Math.sin(t/3)*120)+'px,'+(Math.cos(t/4)*80)+'px)';
+  el('f2').style.transform='translate('+(Math.cos(t/3.5)*140)+'px,'+(Math.sin(t/5)*90)+'px)';
+  el('fin2').style.opacity=ease((t-32.0)/0.6);
+  let w=null; for(const x of WORDS){ if(t>=x.s && t<x.e+0.12){ w=x; } }
+  const cap=el('cap');
+  if(w && t<32){ const k=ease((t-w.s)/0.12); cap.textContent=w.w.replace(/[,:]$/,''); cap.className=w.hot?'hot':''; cap.style.transform='scale('+(0.75+0.25*k)+')'; cap.style.opacity=1; }
+  else cap.style.opacity=0;
+  if(mode==='frame'){ el('slot').style.background='transparent'; el('cap').style.opacity=0; el('fin2').style.opacity=0; document.body.style.background='transparent';
+    for(const id of ['world']) el(id).style.webkitMaskImage='none'; }
+};
+render(0);
+</script></body></html>

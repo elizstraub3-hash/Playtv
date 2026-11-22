@@ -1,0 +1,91 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+@font-face{font-family:P;font-weight:600;src:url(file://__P__/vendor/fonts/poppins-latin-600-normal.woff2)}
+@font-face{font-family:P;font-weight:800;src:url(file://__P__/vendor/fonts/poppins-latin-800-normal.woff2)}
+*{box-sizing:border-box}
+body{margin:0;width:1080px;height:1920px;overflow:hidden;background:#12052e;font-family:P;color:#fff;position:relative}
+.bg{position:absolute;inset:-120px;background:url(file://__P__/cover.jpg) center/cover;filter:blur(60px) saturate(1.25) brightness(.7)}
+.vig{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 45%,transparent 30%,#0b021ecc 100%)}
+.scene{position:absolute;inset:0;opacity:0}
+.cap{position:absolute;left:80px;right:80px;top:210px;text-align:center;font-weight:800;font-size:76px;line-height:1.1;letter-spacing:-1.5px;text-shadow:0 8px 40px #0008}
+.cap small{display:block;margin-top:22px;font-weight:600;font-size:40px;letter-spacing:0;color:#e3d2ff;line-height:1.3}
+.g{background:linear-gradient(135deg,#c79bff,#ffffff);-webkit-background-clip:text;background-clip:text;color:transparent}
+.phone{position:absolute;left:50%;top:560px;width:640px;height:1270px;margin-left:-320px;border-radius:78px;background:#0b0618;padding:18px;box-shadow:0 60px 120px #000c,0 0 0 3px #ffffff30,inset 0 0 0 3px #ffffff14}
+.phone .scr{width:100%;height:100%;border-radius:62px;overflow:hidden;position:relative;background:#0f0a1e}
+.phone img{width:100%;display:block}
+.notch{position:absolute;top:30px;left:50%;width:150px;height:36px;margin-left:-75px;border-radius:20px;background:#000;z-index:2}
+.logo-wrap{position:absolute;left:0;right:0;top:620px;display:flex;flex-direction:column;align-items:center;gap:40px}
+.icon{width:300px;height:300px;border-radius:72px;box-shadow:0 30px 90px #6a11d8aa}
+.word{font-weight:800;font-size:150px;letter-spacing:-4px;line-height:1}
+.word b{background:linear-gradient(135deg,#a855f7,#d8b4fe);-webkit-background-clip:text;background-clip:text;color:transparent}
+.tag{font-weight:600;font-size:48px;color:#e8dcff}
+.sweep{position:absolute;top:0;bottom:0;width:260px;background:linear-gradient(100deg,transparent,#ffffff40,transparent);transform:skewX(-20deg)}
+.tv{position:absolute;left:50%;top:640px;width:980px;margin-left:-490px;border-radius:26px;background:#0b0618;padding:14px;box-shadow:0 50px 100px #000c,0 0 0 3px #ffffff26}
+.tv img{width:100%;display:block;border-radius:14px}
+.mini{position:absolute;width:260px;height:520px;border-radius:44px;background:#0b0618;padding:10px;box-shadow:0 40px 80px #000c,0 0 0 3px #ffffff30}
+.mini img{width:100%;height:100%;object-fit:cover;object-position:top;border-radius:36px;display:block}
+.devlist{position:absolute;left:0;right:0;top:1380px;display:flex;justify-content:center;gap:22px;flex-wrap:wrap;padding:0 60px}
+.chip{padding:20px 34px;border-radius:999px;background:#ffffff14;border:2px solid #ffffff2e;font-weight:600;font-size:38px}
+.grid4{position:absolute;left:90px;right:90px;top:560px;display:grid;grid-template-columns:1fr 1fr;gap:34px}
+.feat{background:#1c1236cc;border:2px solid #ffffff22;border-radius:40px;padding:46px 36px;display:flex;flex-direction:column;gap:22px;min-height:420px}
+.feat .ic{width:96px;height:96px;border-radius:28px;background:linear-gradient(135deg,#6a11d8,#b05cff);display:grid;place-items:center}
+.feat .ic svg{width:54px;height:54px}
+.feat h3{margin:0;font-size:46px;line-height:1.1}
+.feat p{margin:0;font-weight:600;font-size:30px;color:#cfc2ec;line-height:1.3}
+.plans{position:absolute;left:90px;right:90px;top:1000px;display:grid;grid-template-columns:1fr 1fr;gap:30px}
+.plan{border-radius:40px;padding:40px 30px;background:#1c1236dd;border:2px solid #ffffff26;text-align:center}
+.plan.best{border:4px solid #b66dff;background:linear-gradient(160deg,#3a1876,#1c1236)}
+.plan .n{font-weight:600;font-size:36px;color:#cfc2ec}
+.plan .v{font-weight:800;font-size:76px;letter-spacing:-2px;line-height:1.1;margin-top:8px}
+.plan .s{font-weight:600;font-size:28px;color:#7ef0a8;margin-top:8px}
+.cta{position:absolute;left:90px;right:90px;top:1420px;display:flex;flex-direction:column;align-items:center;gap:26px}
+.wa{display:flex;align-items:center;gap:20px;background:#25d366;color:#06301a;font-weight:800;font-size:46px;padding:30px 56px;border-radius:999px;box-shadow:0 20px 60px #25d36655}
+.wa svg{width:56px;height:56px}
+.url{font-weight:600;font-size:40px;color:#e3d2ff}
+</style></head><body>
+<div class="bg" id="bg"></div><div class="vig"></div>
+<div class="scene" id="s1"><div class="logo-wrap"><img class="icon" id="s1i" src="file://__P__/icon.svg"><div class="word" id="s1w">EZ<b>Play</b></div><div class="tag" id="s1t">Sua TV, simples de verdade.</div></div><div class="sweep" id="s1s"></div></div>
+<div class="scene" id="s2"><div class="cap" style="top:700px;font-size:96px" id="s2c">Cansou de app <span class="g">confuso</span> e difícil de usar?</div><div class="cap" style="top:1180px" id="s2d"><small style="font-size:56px">Conheça o EZ Play.</small></div></div>
+<div class="scene" id="s3"><div class="cap">Tudo <span class="g">organizado</span> em uma tela só<small>TV ao vivo, filmes e séries da sua playlist</small></div><div class="phone" id="s3p"><div class="notch"></div><div class="scr"><img src="file://__SH__/m1-home.png"></div></div></div>
+<div class="scene" id="s4"><div class="cap">TV ao vivo <span class="g">por categorias</span><small>Troque de canal direto no controle</small></div><div class="phone" id="s4p"><div class="notch"></div><div class="scr"><img src="file://__SH__/m2-live.png"></div></div></div>
+<div class="scene" id="s5"><div class="cap">Séries com <span class="g">temporadas</span> e episódios<small>Próximo episódio automático</small></div><div class="phone" id="s5p"><div class="notch"></div><div class="scr"><img src="file://__SH__/m3-series.png"></div></div></div>
+<div class="scene" id="s6"><div class="cap">Filmes com <span class="g">capa, nota</span> e sinopse<small>E continue de onde parou</small></div><div class="phone" id="s6p"><div class="notch"></div><div class="scr"><img id="s6a" src="file://__SH__/m4-movies.png"><img id="s6b" src="file://__SH__/m5-detail.png" style="position:absolute;inset:0;opacity:0"></div></div></div>
+<div class="scene" id="s7"><div class="cap">Em <span class="g">todos</span> os seus aparelhos</div><div class="tv" id="s7tv"><img src="file://__SH__/tv1-home.png"></div><div class="mini" id="s7m" style="left:740px;top:760px"><img src="file://__SH__/m1-home.png"></div>
+ <div class="devlist" id="s7l"><span class="chip">Celular</span><span class="chip">TV Box</span><span class="chip">Android TV</span><span class="chip">Windows</span></div></div>
+<div class="scene" id="s8"><div class="cap">Feito para <span class="g">a família toda</span></div><div class="grid4" id="s8g">
+ <div class="feat"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg></div><h3>Perfis</h3><p>Cada um com seus favoritos e histórico</p></div>
+ <div class="feat"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></div><h3>Controle parental</h3><p>Bloqueio com PIN</p></div>
+ <div class="feat"><div class="ic"><svg viewBox="0 0 24 24" fill="#fff"><path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1 6.2L12 17.3 6.5 20.2l1-6.2L3 9.6l6.2-.9z"/></svg></div><h3>Favoritos</h3><p>Seus canais preferidos a um toque</p></div>
+ <div class="feat"><div class="ic"><svg viewBox="0 0 24 24" fill="#fff"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Z"/></svg></div><h3>Suporte</h3><p>Atendimento pelo WhatsApp</p></div>
+</div></div>
+<div class="scene" id="s9"><div class="logo-wrap" style="top:300px;gap:26px"><img class="icon" style="width:220px;height:220px;border-radius:54px" src="file://__P__/icon.svg"><div class="word" style="font-size:120px">EZ<b>Play</b></div></div>
+ <div class="plans" id="s9p"><div class="plan"><div class="n">Mensal</div><div class="v">R$ 30</div></div><div class="plan best"><div class="n">Anual</div><div class="v">R$ 300</div><div class="s">2 meses grátis</div></div></div>
+ <div class="cta" id="s9c"><div class="wa"><svg viewBox="0 0 24 24"><path fill="#fff" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm4.5 12.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.1-1.2l-.4-.2Z"/></svg>Assine pelo WhatsApp</div><div class="url">ezplaytv.vercel.app</div></div></div>
+<script>
+const el=id=>document.getElementById(id);
+const clamp=(x,a=0,b=1)=>Math.min(b,Math.max(a,x));
+const ease=x=>1-Math.pow(1-clamp(x),3);
+const io=(t,a,b,f)=>Math.min(ease((t-a)/f),1-ease((t-(b-f))/f));
+const S=[['s1',-1,5],['s2',5,11],['s3',11,19],['s4',19,26],['s5',26,33],['s6',33,40],['s7',40,47],['s8',47,53],['s9',53,61.5]];
+window.render=function(t){
+  el('bg').style.transform='scale('+(1.05+t*0.004)+') rotate('+(Math.sin(t/9)*2)+'deg)';
+  for(const [id,a,b] of S){ const o=io(t,a,b,.6); el(id).style.opacity=o; el(id).style.display=o>0.001?'block':'none'; }
+  let k=ease((t-0.2)/1.1); el('s1i').style.transform='scale('+(0.4+0.6*k)+') rotate('+((1-k)*-25)+'deg)'; el('s1i').style.opacity=k;
+  k=ease((t-1.0)/0.9); el('s1w').style.transform='translateY('+(60*(1-k))+'px)'; el('s1w').style.opacity=k;
+  k=ease((t-1.8)/0.9); el('s1t').style.transform='translateY('+(40*(1-k))+'px)'; el('s1t').style.opacity=k;
+  el('s1s').style.left=(-400+((t-2.2)/1.4)*1800)+'px';
+  k=ease((t-5.3)/0.8); el('s2c').style.transform='scale('+(0.9+0.1*k)+')';
+  k=ease((t-7.2)/0.8); el('s2d').style.opacity=k; el('s2d').style.transform='translateY('+(40*(1-k))+'px)';
+  for(const [id,a] of [['s3p',11],['s4p',19],['s5p',26],['s6p',33]]){
+    const e=ease((t-a-0.2)/1.0), fl=Math.sin((t-a)*1.2)*8;
+    el(id).style.transform='translateY('+(500*(1-e)+fl)+'px) rotate('+((1-e)*6)+'deg) scale('+(0.96+0.04*e)+')';
+  }
+  el('s6b').style.opacity=ease((t-36.4)/0.6);
+  k=ease((t-40.3)/1.0); el('s7tv').style.transform='translateY('+(200*(1-k))+'px) scale('+(0.9+0.1*k)+')'; el('s7tv').style.opacity=k;
+  k=ease((t-41.3)/1.0); el('s7m').style.transform='translateX('+(400*(1-k))+'px) rotate('+(4-4*k)+'deg)';
+  k=ease((t-42.3)/0.9); el('s7l').style.opacity=k; el('s7l').style.transform='translateY('+(40*(1-k))+'px)';
+  [...el('s8g').children].forEach((c,i)=>{ const e=ease((t-47.4-i*0.35)/0.7); c.style.opacity=e; c.style.transform='translateY('+(80*(1-e))+'px)'; });
+  k=ease((t-54.0)/0.8); el('s9p').style.opacity=k; el('s9p').style.transform='translateY('+(60*(1-k))+'px)';
+  k=ease((t-55.0)/0.8); el('s9c').style.opacity=k; el('s9c').style.transform='scale('+(0.9+0.1*k+Math.max(0,Math.sin((t-56)*3))*0.02)+')';
+};
+render(0);
+</script></body></html>
