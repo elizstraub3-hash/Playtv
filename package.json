@@ -1,0 +1,56 @@
+{
+  "name": "playtv",
+  "version": "2.0.0",
+  "description": "Play TV — player de IPTV para canais ao vivo, filmes e séries a partir das playlists do usuário.",
+  "author": "Play TV",
+  "license": "UNLICENSED",
+  "private": true,
+  "main": "electron/main.js",
+  "scripts": {
+    "cap:sync": "cap sync android",
+    "win:start": "electron .",
+    "win:build": "electron-builder --win nsis --publish never"
+  },
+  "dependencies": {
+    "@capacitor/android": "8.6.2",
+    "@capacitor/core": "8.6.2"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "8.6.2",
+    "electron": "45.4.1",
+    "electron-builder": "26.18.0"
+  },
+  "build": {
+    "appId": "com.playtv.app",
+    "productName": "Play TV",
+    "copyright": "Play TV",
+    "directories": {
+      "output": "dist-win",
+      "buildResources": "build"
+    },
+    "files": [
+      "electron/**",
+      "www/**",
+      "build/icon.png",
+      "package.json"
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "build/icon.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "shortcutName": "Play TV",
+      "artifactName": "PlayTV-Setup-${version}.exe"
+    }
+  }
+}

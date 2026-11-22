@@ -17,6 +17,9 @@
   }
   const fmtTime = (s) => { s = Math.floor(s); const h = Math.floor(s / 3600), m = Math.floor((s % 3600) / 60), x = s % 60; return (h ? h + ':' + String(m).padStart(2, '0') : m) + ':' + String(x).padStart(2, '0'); };
   const isAdult = (s) => /(adult|xxx|\+18|18\+|adulto|porn|er[oó]tic)/i.test(s || '');
+  // App instalado (Android via Capacitor ou Windows via Electron): sem bloqueio de http:// e CORS
+  const IS_APP = !!(window.Capacitor && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform()) || /Electron/i.test(navigator.userAgent);
+  const blockedHttp = (url) => !IS_APP && location.protocol === 'https:' && /^http:/i.test(url || '');
   const COLORS = ['#ffb020', '#ff5d7a', '#5ad1ff', '#7cf29c', '#c79bff', '#ff8a3d'];
 
   const I = {
@@ -186,7 +189,7 @@
   }
 
   function friendlyError(e, url) {
-    if (location.protocol === 'https:' && /^http:/i.test(url || '')) return 'Esse servidor usa http:// e o app está em https://. O navegador bloqueia essa combinação. Use um link https:// ou a versão instalada do app.';
+    if (blockedHttp(url)) return 'Esse servidor usa http:// e o app está em https://. O navegador bloqueia essa combinação. Use um link https:// ou a versão instalada do app.';
     if (e instanceof TypeError) return 'Não foi possível conectar. O servidor pode estar fora do ar ou bloquear acesso pelo navegador (CORS). Para listas M3U, tente a opção "Arquivo".';
     return e.message || 'Erro ao carregar.';
   }
@@ -804,7 +807,7 @@
   function toast(t) { const el = $('#pToast'); el.textContent = t; el.classList.remove('hidden'); clearTimeout(el._t); el._t = setTimeout(() => el.classList.add('hidden'), 2800); }
   function playError() {
     const url = cur?.url || '';
-    const httpBlock = location.protocol === 'https:' && /^http:/i.test(url);
+    const httpBlock = blockedHttp(url);
     pMsg(`<b>Não foi possível reproduzir.</b><span style="color:var(--muted)">${httpBlock
       ? 'Este conteúdo usa http:// e o navegador bloqueia em sites seguros. Ele funciona na versão instalada do app.'
       : 'O conteúdo pode estar fora do ar, em um formato que o navegador não abre, ou o servidor bloqueia navegadores.'}</span>
@@ -828,7 +831,37 @@
   }
   window.addEventListener('popstate', () => { if (!player.classList.contains('hidden')) closePlayer(true); });
 
+  function nativePlayer() {
+    const C = window.Capacitor;
+    return C && C.isNativePlatform && C.isNativePlatform() && C.Plugins && C.Plugins.NativePlayer;
+  }
+  // Android: abre o player nativo (toca HLS, .ts, .mkv e links http:// sem bloqueio)
+  async function playNative(NP, c) {
+    let items, index = 0;
+    if (c.kind === 'live') {
+      // envia no máximo 400 canais ao redor do atual (limite de tamanho do Android)
+      const from = Math.max(0, c.index - 200), slice = c.list.slice(from, from + 400);
+      items = slice.map((x) => ({ url: x.url, title: x.name, sub: x.catName || '' }));
+      index = c.index - from;
+    } else if (c.kind === 'episode') {
+      items = c.eps.map((e) => ({ url: e.url, title: c.series.name, sub: `T${e.season} E${e.num} · ${e.title}` }));
+      index = c.epIndex;
+    } else items = [{ url: c.url, title: c.title, sub: c.sub || '' }];
+    try {
+      const r = await NP.play({ items, index, live: c.kind === 'live', autoNext: c.kind === 'episode', startPosition: c.resumeAt || 0 });
+      cur = c;
+      if (c.kind === 'episode') { cur.epIndex = r.index; cur.ep = c.eps[r.index]; }
+      if (c.kind !== 'live' && r.duration > 0) saveProgress(true, { t: r.position, d: r.duration });
+    } catch (e) {
+      alert('Não foi possível abrir o player: ' + (e && e.message ? e.message : e));
+    }
+    cur = null;
+    render();
+  }
+
   function start(c) {
+    const NP = nativePlayer();
+    if (NP) { playNative(NP, c); return; }
     cur = c;
     stopEngines(); pMsg('');
     $('#pName').textContent = c.title;
@@ -915,12 +948,12 @@
     const i = Math.max(0, eps.findIndex((e) => e.url === p?.ep?.url));
     playEpisode(it, eps, i);
   }
-  function saveProgress(force) {
+  function saveProgress(force, over) {
     if (!cur || cur.kind === 'live') return;
     const now = Date.now();
     if (!force && now - saveT < 5000) return;
     saveT = now;
-    const t = video.currentTime, d = video.duration;
+    const t = over ? over.t : video.currentTime, d = over ? over.d : video.duration;
     if (!d || !isFinite(d) || t < 15) return;
     const key = cur.item.key;
     if (t / d > 0.94) {
@@ -1013,6 +1046,6 @@
     lastHash = location.hash;
     render();
     setTimeout(() => { $('#splash').classList.add('out'); setTimeout(() => $('#splash').remove(), 500); }, Math.max(0, 1100 - (Date.now() - t0)));
-    if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(() => { });
+    if ('serviceWorker' in navigator && !IS_APP && location.protocol === 'https:') navigator.serviceWorker.register('sw.js').catch(() => { });
   })();
 })();

@@ -1,0 +1,112 @@
+# Gera os apps a cada atualização no branch main (ou manualmente em Actions → Run workflow):
+#  - Android: APK (instalar direto no celular/TV Box) e AAB (enviar para a Play Store)
+#  - Windows: instalador .exe
+# Os arquivos ficam na página "Releases" do repositório.
+name: Gerar apps
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: build-apps
+  cancel-in-progress: true
+
+env:
+  VERSION_NAME: 2.0.${{ github.run_number }}
+  VERSION_CODE: ${{ github.run_number }}
+
+jobs:
+  android:
+    runs-on: ubuntu-latest
+    env:
+      KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+      - name: Instalar dependências
+        run: npm ci
+        env:
+          ELECTRON_SKIP_BINARY_DOWNLOAD: 1
+      - name: Copiar o app web para o Android
+        run: npx cap sync android
+      - name: Preparar chave de assinatura
+        if: ${{ env.KEYSTORE_BASE64 != '' }}
+        run: |
+          echo "$KEYSTORE_BASE64" | base64 -d > "$RUNNER_TEMP/upload.jks"
+          echo "ANDROID_KEYSTORE_PATH=$RUNNER_TEMP/upload.jks" >> "$GITHUB_ENV"
+      - name: Gerar APK e AAB assinados
+        if: ${{ env.KEYSTORE_BASE64 != '' }}
+        working-directory: android
+        env:
+          ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+        run: |
+          chmod +x gradlew
+          ./gradlew --no-daemon assembleRelease bundleRelease
+          mkdir -p ../out
+          cp app/build/outputs/apk/release/app-release.apk "../out/PlayTV-${VERSION_NAME}.apk"
+          cp app/build/outputs/bundle/release/app-release.aab "../out/PlayTV-${VERSION_NAME}-PlayStore.aab"
+      - name: Gerar APK de teste (sem chave de assinatura configurada)
+        if: ${{ env.KEYSTORE_BASE64 == '' }}
+        working-directory: android
+        run: |
+          chmod +x gradlew
+          ./gradlew --no-daemon assembleDebug
+          mkdir -p ../out
+          cp app/build/outputs/apk/debug/app-debug.apk "../out/PlayTV-${VERSION_NAME}-teste.apk"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: android
+          path: out/*
+
+  windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - name: Instalar dependências
+        run: npm ci
+      - name: Gerar instalador do Windows
+        shell: bash
+        run: |
+          npm pkg set version="$VERSION_NAME"
+          npx electron-builder --win nsis --publish never
+      - uses: actions/upload-artifact@v4
+        with:
+          name: windows
+          path: dist-win/*.exe
+
+  release:
+    needs: [android, windows]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: files
+          merge-multiple: true
+      - name: Publicar em Releases
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ env.VERSION_NAME }}
+          name: Play TV ${{ env.VERSION_NAME }}
+          make_latest: true
+          files: files/*
+          body: |
+            **Android (celular e TV Box):** baixe o arquivo `.apk` e abra no aparelho para instalar.
+            **Play Store:** envie o arquivo `.aab` no Google Play Console (aparece quando a chave de assinatura está configurada).
+            **Windows:** baixe `PlayTV-Setup-….exe` e execute.
