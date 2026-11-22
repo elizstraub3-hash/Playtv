@@ -1,4 +1,4 @@
-# Play TV
+# EZ Play
 
 Player de IPTV (PWA) para canais ao vivo, filmes e séries a partir das playlists do próprio usuário: login Xtream, link M3U, arquivo .m3u ou link de um canal.
 

@@ -1,4 +1,4 @@
-/* Play TV — player de IPTV (PWA).
+/* EZ Play — player de IPTV (PWA).
    Não fornece conteúdo: reproduz playlists M3U, logins Xtream e links do próprio usuário. */
 (() => {
   'use strict';
@@ -562,7 +562,7 @@
         <div id="addFields">${addFields()}</div>
         <p class="msg" id="addMsg"></p>
         <button class="btn primary" id="addBtn">${ico('plus')} Adicionar</button>
-        <p class="note">Suas playlists ficam salvas apenas neste aparelho. O Play TV não fornece canais nem conteúdo: use somente listas que você tem direito de assistir.</p>
+        <p class="note">Suas playlists ficam salvas apenas neste aparelho. O EZ Play não fornece canais nem conteúdo: use somente listas que você tem direito de assistir.</p>
       </form>`;
   }
   function addFields() {
@@ -645,8 +645,8 @@
         <p>Esconde categorias e títulos com termos como "adulto", "+18" e "XXX". Para desativar, é preciso o PIN.</p>
       </div>
       <div class="panel"><h3>Playlists</h3><p>${S.playlists.length} playlist(s) adicionada(s).</p><div><a class="btn" href="#/playlists">Gerenciar playlists</a></div></div>
-      <div class="panel"><h3>Sobre</h3><p>Play TV ${VERSION} · ID do aparelho ${esc(S.settings.deviceId)}</p>
-        <p>O Play TV é um reprodutor. Não oferece, vende nem hospeda canais ou filmes.</p>
+      <div class="panel"><h3>Sobre</h3><p>EZ Play ${VERSION} · ID do aparelho ${esc(S.settings.deviceId)}</p>
+        <p>O EZ Play é um reprodutor. Não oferece, vende nem hospeda canais ou filmes.</p>
         <div><button class="btn" id="setClear">Apagar todos os dados deste aparelho</button></div>
       </div>`;
   }

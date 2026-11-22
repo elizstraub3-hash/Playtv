@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name">Play TV</string>
-    <string name="title_activity_main">Play TV</string>
-    <string name="package_name">com.playtv.app</string>
-    <string name="custom_url_scheme">com.playtv.app</string>
+    <string name="app_name">EZ Play</string>
+    <string name="title_activity_main">EZ Play</string>
+    <string name="package_name">com.ezplay.app</string>
+    <string name="custom_url_scheme">com.ezplay.app</string>
 </resources>

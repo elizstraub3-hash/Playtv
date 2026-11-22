@@ -1,6 +1,6 @@
 // Service worker: guarda a "casca" do app para abrir rápido e funcionar como app instalado.
 // Streams de vídeo e listas nunca são cacheados.
-const CACHE = 'playtv-v3';
+const CACHE = 'ezplay-v4';
 const SHELL = ['./', 'index.html', 'style.css', 'app.js', 'icon.svg', 'manifest.webmanifest', 'vendor/hls.min.js', 'vendor/mpegts.min.js'];
 
 self.addEventListener('install', (e) => {

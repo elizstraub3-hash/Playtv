@@ -1,8 +1,8 @@
 {
-  "name": "playtv",
+  "name": "ezplay",
   "version": "2.0.0",
-  "description": "Play TV — player de IPTV para canais ao vivo, filmes e séries a partir das playlists do usuário.",
-  "author": "Play TV",
+  "description": "EZ Play — player de IPTV para canais ao vivo, filmes e séries a partir das playlists do usuário.",
+  "author": "EZ Play",
   "license": "UNLICENSED",
   "private": true,
   "main": "electron/main.js",
@@ -21,9 +21,9 @@
     "electron-builder": "26.18.0"
   },
   "build": {
-    "appId": "com.playtv.app",
-    "productName": "Play TV",
-    "copyright": "Play TV",
+    "appId": "com.ezplay.app",
+    "productName": "EZ Play",
+    "copyright": "EZ Play",
     "directories": {
       "output": "dist-win",
       "buildResources": "build"
@@ -49,8 +49,8 @@
       "oneClick": false,
       "allowToChangeInstallationDirectory": true,
       "createDesktopShortcut": true,
-      "shortcutName": "Play TV",
-      "artifactName": "PlayTV-Setup-${version}.exe"
+      "shortcutName": "EZ Play",
+      "artifactName": "EZPlay-Setup-${version}.exe"
     }
   }
 }

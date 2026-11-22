@@ -1,6 +1,6 @@
 {
-  "appId": "com.playtv.app",
-  "appName": "Play TV",
+  "appId": "com.ezplay.app",
+  "appName": "EZ Play",
   "webDir": "www",
   "server": {
     "androidScheme": "https",

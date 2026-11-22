@@ -1,4 +1,4 @@
-// Play TV para Windows (Electron). Carrega o mesmo app da pasta www/.
+// EZ Play para Windows (Electron). Carrega o mesmo app da pasta www/.
 const { app, BrowserWindow, Menu, shell } = require('electron');
 const path = require('path');
 
@@ -11,7 +11,7 @@ function createWindow() {
     minWidth: 380,
     minHeight: 560,
     backgroundColor: '#0d0b14',
-    title: 'Play TV',
+    title: 'EZ Play',
     icon: path.join(__dirname, '..', 'build', 'icon.png'),
     autoHideMenuBar: true,
     webPreferences: {

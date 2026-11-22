@@ -54,8 +54,8 @@ jobs:
           chmod +x gradlew
           ./gradlew --no-daemon assembleRelease bundleRelease
           mkdir -p ../out
-          cp app/build/outputs/apk/release/app-release.apk "../out/PlayTV-${VERSION_NAME}.apk"
-          cp app/build/outputs/bundle/release/app-release.aab "../out/PlayTV-${VERSION_NAME}-PlayStore.aab"
+          cp app/build/outputs/apk/release/app-release.apk "../out/EZPlay-${VERSION_NAME}.apk"
+          cp app/build/outputs/bundle/release/app-release.aab "../out/EZPlay-${VERSION_NAME}-PlayStore.aab"
       - name: Gerar APK de teste (sem chave de assinatura configurada)
         if: ${{ env.KEYSTORE_BASE64 == '' }}
         working-directory: android
@@ -63,7 +63,7 @@ jobs:
           chmod +x gradlew
           ./gradlew --no-daemon assembleDebug
           mkdir -p ../out
-          cp app/build/outputs/apk/debug/app-debug.apk "../out/PlayTV-${VERSION_NAME}-teste.apk"
+          cp app/build/outputs/apk/debug/app-debug.apk "../out/EZPlay-${VERSION_NAME}-teste.apk"
       - uses: actions/upload-artifact@v4
         with:
           name: android
@@ -103,10 +103,10 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           tag_name: v${{ env.VERSION_NAME }}
-          name: Play TV ${{ env.VERSION_NAME }}
+          name: EZ Play ${{ env.VERSION_NAME }}
           make_latest: true
           files: files/*
           body: |
             **Android (celular e TV Box):** baixe o arquivo `.apk` e abra no aparelho para instalar.
             **Play Store:** envie o arquivo `.aab` no Google Play Console (aparece quando a chave de assinatura está configurada).
-            **Windows:** baixe `PlayTV-Setup-….exe` e execute.
+            **Windows:** baixe `EZPlay-Setup-….exe` e execute.

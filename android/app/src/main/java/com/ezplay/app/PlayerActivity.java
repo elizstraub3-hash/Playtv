@@ -1,4 +1,4 @@
-package com.playtv.app;
+package com.ezplay.app;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -72,7 +72,7 @@ public class PlayerActivity extends AppCompatActivity {
         buildLayout();
 
         DefaultHttpDataSource.Factory http = new DefaultHttpDataSource.Factory()
-                .setUserAgent("PlayTV/2.0 (Linux; Android) ExoPlayer")
+                .setUserAgent("EZPlay/2.0 (Linux; Android) ExoPlayer")
                 .setAllowCrossProtocolRedirects(true)
                 .setConnectTimeoutMs(15000)
                 .setReadTimeoutMs(20000);

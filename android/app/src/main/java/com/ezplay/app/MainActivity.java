@@ -1,4 +1,4 @@
-package com.playtv.app;
+package com.ezplay.app;
 
 import android.os.Bundle;
 import com.getcapacitor.BridgeActivity;

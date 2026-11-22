@@ -1,6 +1,6 @@
 {
-  "name": "Play TV",
-  "short_name": "Play TV",
+  "name": "EZ Play",
+  "short_name": "EZ Play",
   "description": "Player de IPTV para suas listas M3U, canais e filmes.",
   "start_url": "./",
   "scope": "./",
