@@ -5,7 +5,7 @@ rng = np.random.default_rng(7)
 t_all = np.arange(N) / SR
 
 def env_adsr(n, a=0.01, r=0.2):
-    e = np.ones(n); na = max(1, int(a * SR)); nr = max(1, int(r * SR))
+    e = np.ones(n); na = min(n, max(1, int(a * SR))); nr = min(n - na, max(1, int(r * SR))) or 1
     e[:na] = np.linspace(0, 1, na); e[-nr:] *= np.linspace(1, 0, nr) ** 2
     return e
 
