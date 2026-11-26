@@ -41,7 +41,13 @@ jobs:
       - name: Preparar chave de assinatura
         if: ${{ env.KEYSTORE_BASE64 != '' }}
         run: |
-          echo "$KEYSTORE_BASE64" | base64 -d > "$RUNNER_TEMP/upload.jks"
+          # remove espaços, quebras de linha e aspas que podem vir na hora de colar o segredo
+          LIMPO=$(printf '%s' "$KEYSTORE_BASE64" | tr -d ' \r\n\t"')
+          echo "Segredo ANDROID_KEYSTORE_BASE64: ${#LIMPO} caracteres (esperado: 5708), começa com ${LIMPO:0:8}"
+          if ! printf '%s' "$LIMPO" | base64 -d > "$RUNNER_TEMP/upload.jks"; then
+            echo "::error::O segredo ANDROID_KEYSTORE_BASE64 está incompleto ou com texto a mais. Cole de novo TODO o conteúdo do arquivo playtv-upload.jks.base64.txt (deve começar com MIIQtAIB e terminar com ICJxA=)."
+            exit 1
+          fi
           echo "ANDROID_KEYSTORE_PATH=$RUNNER_TEMP/upload.jks" >> "$GITHUB_ENV"
       - name: Gerar APK e AAB assinados
         if: ${{ env.KEYSTORE_BASE64 != '' }}
